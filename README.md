@@ -32,3 +32,9 @@ This is a practice project. The project will maintain the best practices of how 
 - [ ] Build the API using monolithic architecture.
 - [ ] Build a frontend app using ReactJS.
 - [ ] Refactore the API with microservices.
+
+
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[Express.js]: https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB
+[Express-url]: https://expressjs.com/
