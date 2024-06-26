@@ -1,0 +1,51 @@
+openapi: '3.0.0'
+info:
+  title: Blog API
+  version: '0.0'
+  description: >
+    The Blog REST API Application is a collection of public 
+    api endpoints that enables users to create, manage, and 
+    interact with a single author blog. The backend application 
+    provides authentication functionality, allows users to create 
+    and view articles, comment on articles, and upload cover 
+    photos for articles. This document outlines the functional 
+    and non-functional requirements for the development of the 
+    Blog REST API Application.
+  contact:
+    name: 'Md. Mehedi Hasan'
+    email: 'hmehedi203@gmail.com'
+    url: https://github.com/mehedi-hasan-24
+  license:
+    name: 'MIT'
+    url: 'https://www.mit.edu/~amini/LICENSE.md'
+servers:
+  - url: https://localhost:8000/v1
+paths:
+  /health:
+    get:
+      tags:
+        - health
+      description: 'Test the health of the api'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json': 
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: OK
+
+        '500':
+          description: 'Server error'
+          content:
+            'application/json':
+              schema: 
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: health is not okay
+components: {}
