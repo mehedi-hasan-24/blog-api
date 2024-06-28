@@ -109,8 +109,53 @@ paths:
                         message:
                           type: string
                           example: Invalid email 
-            
-            
+
+  /auth/login:
+    # description: sigining in
+    post:
+      tags: [authentication]
+      description: sigining in 
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required: [email, password]
+      responses:
+        '200':
+          description: successful sign in
+          content:
+            'application/json':
+              schema:
+               type: object
+               properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: sigining in successful
+                  access_token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOi
+                          IxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2M
+                          jM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/auth/signin"
+
 
   /health:
     get:
