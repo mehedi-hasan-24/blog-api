@@ -1,7 +1,7 @@
 openapi: '3.0.0'
 info:
   title: Blog API
-  version: '0.0'
+  version: '0.0.0'
   description: >
     The Blog REST API Application is a collection of public 
     api endpoints that enables users to create, manage, and 
@@ -19,8 +19,99 @@ info:
     name: 'MIT'
     url: 'https://www.mit.edu/~amini/LICENSE.md'
 servers:
-  - url: https://localhost:8000/v1
+  - url: https://localhost:8000/api/v1
+tags:
+  - name: health
+    description: checking the health
+  - name: authentication
+    description: sign-in, register (Public)
+  - name: articles
+    description: Articles endpoints (Private, Public)
+  - name: comments
+    description: Comment endpoints (Private, Public)
+  - name: user
+    description: user endpoints (Admin)
+
 paths:
+  /auth/signup: 
+    post: 
+      tags: [authentication]
+      description: Create a new user
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Mehedi Hasan
+                email:
+                  type: string
+                  format: email
+                  # example: 'hmehedi203@gmail.com'
+                password: 
+                  type: string
+                  format: password
+              required: [name, email, password]
+      responses:
+        "201":
+          description: "Successful registration"
+          content:
+            'application/json': 
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: Registration successful
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOi
+                          IxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2M
+                          jM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  links:
+                    type: object
+                    properties:
+                      signin:
+                        type: string
+                        example: "/auth/signin"
+        "400":
+          description: Bad request
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  error:
+                    type: string
+                    example: Bad request
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: email
+                        message:
+                          type: string
+                          example: Invalid email 
+            
+            
+
   /health:
     get:
       tags:
@@ -47,5 +138,10 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: health is not okay
-components: {}
+                    example: not okay
+components: 
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
