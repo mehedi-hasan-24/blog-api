@@ -34,57 +34,37 @@ tags:
 
 paths:
   /auth/signup: 
-    post: 
-      tags: [authentication]
-      description: Create a new user
-      requestBody:
-        required: true
-        content:
-          'application/json':
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: Mehedi Hasan
-                email:
-                  type: string
-                  format: email
-                  # example: 'hmehedi203@gmail.com'
-                password: 
-                  type: string
-                  format: password
-              required: [name, email, password]
+    $ref: './auth/signup.yaml'
+  /auth/login:
+    $ref: './auth/signup.yaml'
+
+
+  /health:
+    get:
+      tags:
+        - health
+      description: 'Test the health of the api'
       responses:
-        "201":
-          description: "Successful registration"
+        '200':
+          description: OK
           content:
             'application/json': 
               schema:
                 type: object
                 properties:
-                  code:
-                    type: integer
-                    format: int32
-                    example: 201
                   message:
                     type: string
-                    example: Registration successful
-                  data:
-                    type: object
-                    properties:
-                      access_token:
-                        type: string
-                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOi
-                          IxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2M
-                          jM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-                  links:
-                    type: object
-                    properties:
-                      signin:
-                        type: string
-                        example: "/auth/signin"
-        "400":
+                    example: OK
+        '500':
+          $ref: "#/components/responses/server-error"
+components: 
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    "auth-bad-request":
           description: Bad request
           content:
             'application/json':
@@ -108,85 +88,17 @@ paths:
                           example: email
                         message:
                           type: string
-                          example: Invalid email 
-
-  /auth/login:
-    # description: sigining in
-    post:
-      tags: [authentication]
-      description: sigining in 
-      requestBody:
-        required: true
+                          example: Invalid email
+    'server-error': 
+        description: 'Server error'
         content:
           'application/json':
-            schema:
+            schema: 
               type: object
               properties:
-                email:
+                code:
+                  type: integer
+                  example: 500
+                message:
                   type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-              required: [email, password]
-      responses:
-        '200':
-          description: successful sign in
-          content:
-            'application/json':
-              schema:
-               type: object
-               properties:
-                  code:
-                    type: integer
-                    format: int32
-                    example: 200
-                  message:
-                    type: string
-                    example: sigining in successful
-                  access_token:
-                    type: string
-                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOi
-                          IxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2M
-                          jM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-                  links:
-                    type: object
-                    properties:
-                      self:
-                        type: string
-                        example: "/auth/signin"
-
-
-  /health:
-    get:
-      tags:
-        - health
-      description: 'Test the health of the api'
-      responses:
-        '200':
-          description: OK
-          content:
-            'application/json': 
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: OK
-
-        '500':
-          description: 'Server error'
-          content:
-            'application/json':
-              schema: 
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: not okay
-components: 
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+                  example: Server Error

@@ -1,0 +1,54 @@
+post: 
+      tags: [authentication]
+      description: Create a new user
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Mehedi Hasan
+                email:
+                  type: string
+                  format: email
+                  # example: 'hmehedi203@gmail.com'
+                password: 
+                  type: string
+                  format: password
+              required: [name, email, password]
+      responses:
+        "201":
+          description: "Successful registration"
+          content:
+            'application/json': 
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: Registration successful
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOi
+                          IxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2M
+                          jM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  links:
+                    type: object
+                    properties:
+                      signin:
+                        type: string
+                        example: "/auth/signin"
+        "400":
+          $ref: './../swagger.yaml/#/components/responses/auth-bad-request'
+        '500':
+          $ref: "./../swagger.yaml/#/components/responses/server-error"
