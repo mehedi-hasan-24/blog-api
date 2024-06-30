@@ -1,0 +1,106 @@
+get:
+  description: Get all published articles.
+  tags: [articles]
+  parameters:
+    - $ref: "./../swagger.yaml#/components/parameters/pageParam"
+    - $ref: "./../swagger.yaml#/components/parameters/limitParam"
+    - $ref: "./../swagger.yaml#/components/parameters/sortTypeParam"
+    - $ref: "./../swagger.yaml#/components/parameters/sortByParam"
+    - $ref: "./../swagger.yaml#/components/parameters/searchParam"
+  responses:
+    '200':
+      description: Return a list of published articles.
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 200
+              data:
+                type: array
+                items: 
+                  allOf:
+                    - type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int32
+                          example: 1
+                        title:
+                          type: string
+                          example: first article
+                        cover:
+                            type: string
+                            format: url
+                            example: https://s3.aws.com/myfirstblog/124.jpg
+                        author:
+                          $ref: "./../swagger.yaml#/components/schemas/AuthorDTO"
+                        link:
+                          type: string
+                          format: url
+                          example: "/articles/1"
+                      required: [id, title, author]
+              pagination:
+                $ref: "./../swagger.yaml#/components/schemas/Pagination"
+              links:
+                type: object
+                properties:
+                  self:
+                    type: string
+                    format: url
+                    example: "/articles?page=2&limit=10"
+                  next:
+                    type: string
+                    format: url
+                    example: "/articles?page=3&limit=10"
+                  prev:
+                    type: string
+                    format: url
+                    example: "/articles?page=1&limit=10"
+    '400': 
+      $ref: './../swagger.yaml/#/components/responses/auth-bad-request'
+    '500': 
+      $ref: "./../swagger.yaml/#/components/responses/server-error"
+post:
+  description: create a new article
+  tags: [articles]
+  operationId: createPost
+  security:
+    - bearerAuth: []
+  requestBody:
+    content:
+      'application/json':
+        schema:
+          type: object 
+          properties:
+            title:
+              type: string
+              example: First article
+            body:
+              type: string
+              format: text
+              example: Body of the first article
+            cover:
+              type: string
+              format: url
+              example: https://s3.aws.example.com/23nds
+            status:
+              type: string
+              enum: [draft, published]
+              example: draft
+          required: [title, body]
+  responses:
+    '201':
+      content:
+        'application/json':
+          schema:
+            $ref: "./../swagger.yaml#/components/schemas/ArticleCreateDTO"
+    "400":
+      $ref: './../swagger.yaml/#/components/responses/auth-bad-request'
+    "401":
+      $ref: './../swagger.yaml/#/components/responses/401'
+    "500":
+      $ref: './../swagger.yaml/#/components/responses/server-error'
