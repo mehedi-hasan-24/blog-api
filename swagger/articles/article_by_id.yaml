@@ -107,3 +107,51 @@ put:
     "500":
       $ref: "./../swagger.yaml#/components/responses/server-error"
 
+patch:
+  security:
+    - bearerAuth: []
+  tags: [articles]
+  description: Partially update an article
+  parameters:
+    - $ref: "./../swagger.yaml#/components/parameters/idPathParam"
+  requestBody:
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: article title
+              body:
+                type: string
+                format: text
+                example: article body
+              cover:
+                type: string
+                format: url
+                example: "https://s3.aws.myblog.com/221ddw34"
+              status:
+                type: string
+                enum: [draft, published]
+                example: draft
+                
+  responses:
+    "200":
+      description: "Successfully Updated"
+      content:
+        "application/json":
+          schema:
+            $ref: "./../swagger.yaml#/components/schemas/ArticleUpdateDTO"
+    "400":
+      $ref: "./../swagger.yaml#/components/responses/auth-bad-request"
+    "401":
+      $ref: "./../swagger.yaml#/components/responses/401"
+    "403":
+      $ref: "./../swagger.yaml#/components/responses/403"
+    "404":
+      $ref: "./../swagger.yaml#/components/responses/404"
+    "500":
+      $ref: "./../swagger.yaml#/components/responses/server-error"
+
+
