@@ -153,5 +153,21 @@ patch:
       $ref: "./../swagger.yaml#/components/responses/404"
     "500":
       $ref: "./../swagger.yaml#/components/responses/server-error"
-
-
+delete:
+  security:
+    - bearerAuth: []
+  tags: [articles]
+  description: Delete an article by id
+  parameters:
+    - $ref: "./../swagger.yaml#/components/parameters/idPathParam"
+  responses:
+    "204":
+      description: "Article deleted successfully"
+    "401":
+      $ref: "./../swagger.yaml#/components/responses/401"
+    "403":
+      $ref: "./../swagger.yaml#/components/responses/403"
+    "404":
+      $ref: "./../swagger.yaml#/components/responses/404"
+    "500":
+      $ref: "./../swagger.yaml#/components/responses/server-error"
