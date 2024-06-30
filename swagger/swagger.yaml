@@ -38,7 +38,9 @@ paths:
   /auth/login:
     $ref: './auth/signin.yaml'
   /articles:
-    $ref: "./articles/articles.yaml"
+    $ref: './articles/articles.yaml'
+  /articles/{id}:
+    $ref: './articles/article_by_id.yaml'
 
 
   /health:
@@ -170,6 +172,50 @@ components:
           type: string
           example: "Mehedi Hasan"
       required: [id, name]
+    Comment:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+              example: 1
+            authorId:
+              type: integer
+              format: int32
+              example: 1
+            articleId:
+              type: integer
+              format: int32
+              example: 1
+            body:
+              type: string
+              format: text
+              example: The body of the comment
+            status:
+              type: string
+              enum: [public, private]
+              example: public
+          required: [id, authorId, articleId, body, status]
+        - $ref: "#/components/schemas/Timestamp"
+    ArticleUpdateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          type: string
+          example: Article updated successfully
+        data:
+          $ref: "#/components/schemas/Article"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              example: "/articles/1"
   securitySchemes:
     bearerAuth:
       type: http
@@ -234,6 +280,40 @@ components:
               message:
                 type: string
                 example: You don't have the right permissions
+    "404":
+      description: Resource Not Found
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 404
+              error:
+                type: string
+                example: Not Found
+              message:
+                type: string
+                example: Requested resource not found
+    "403":
+      description: Resource Forbidden
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 403
+              error:
+                type: string
+                example: Resource Forbidden
+              message:
+                type: string
+                example: Resource forbidden. You don't have enough permissions
   parameters:
     pageParam:
       description: Current page number.
@@ -270,4 +350,12 @@ components:
       schema:
         type: string
         example: title
+    idPathParam:
+      in: path
+      name: id
+      required: true
+      description: Article ID
+      schema:
+        type: number
+        example: 1
           

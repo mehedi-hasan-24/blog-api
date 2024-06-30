@@ -1,0 +1,109 @@
+get:
+  tags: [articles]
+  description: Get an article by id
+  parameters:
+    - $ref: "./../swagger.yaml#/components/parameters/idPathParam"
+    - in: query
+      name: expand
+      description: Comma separated value of the attributes 
+        which should be expanded with the response. 
+  responses:
+    "200":
+      content:
+        "application/json":
+          schema: 
+            type: object
+            properties:
+              code: 
+                type: number
+                example: 200
+              data:
+                allOf:
+                  - $ref: "./../swagger.yaml#/components/schemas/Article"
+                  - type: object
+                    properties:
+                      author:
+                        $ref: "./../swagger.yaml#/components/schemas/AuthorDTO"
+                  - type: object
+                    properties:
+                      comments:
+                        type: array
+                        items:
+                          $ref: "./../swagger.yaml#/components/schemas/Comment"
+              links:
+                type: object
+                properties:
+                  self:
+                    type: string
+                    example: "/articles/1"
+                  author:
+                    type: string
+                    example: "/articles/1/author"
+                  comments:
+                    type: string
+                    example: "/articles/1/comments"
+    "400":
+      $ref: "./../swagger.yaml#/components/responses/auth-bad-request"
+    "401":
+      $ref: "./../swagger.yaml#/components/responses/401"
+    "403":
+      $ref: "./../swagger.yaml#/components/responses/403"
+    "404":
+      $ref: "./../swagger.yaml#/components/responses/404"
+    "500":
+      $ref: "./../swagger.yaml/#/components/responses/server-error"
+put:
+  security:
+    - bearerAuth: []
+  tags: [articles]
+  description: Create or update entire article
+  parameters:
+    - $ref: "./../swagger.yaml#/components/parameters/idPathParam"
+  requestBody:
+    content:
+      'application/json':
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+              example: 1
+            title:
+              type: string
+              example: article title
+            body:
+              type: string
+              format: text
+              example: article body
+            cover:
+              type: string
+              format: url
+              example: "https://s3.aws.myblog.com/221ddw34"
+            status:
+              type: string
+              enum: [draft, published]
+              example: draft
+          required: [title, body]
+  responses:
+    "200":
+      description: "Successfully Updated"
+      content: &article_update_content
+        "application/json":
+          schema:
+            $ref: "./../swagger.yaml#/components/schemas/ArticleUpdateDTO"
+    "201":
+      description: "Successfully Created"
+      content:
+        "application/json":
+          schema:
+            $ref: "./../swagger.yaml#/components/schemas/ArticleCreateDTO"
+    "400":
+      $ref: "./../swagger.yaml#/components/responses/auth-bad-request"
+    "401":
+      $ref: "./../swagger.yaml#/components/responses/401"
+    "403":
+      $ref: "./../swagger.yaml#/components/responses/403"
+    "500":
+      $ref: "./../swagger.yaml#/components/responses/server-error"
+
