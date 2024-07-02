@@ -29,6 +29,7 @@ This is a practice project. The project will maintain the best practices of how 
 * [![Express][Express.js]][Express-url]
 ### Project Plan
 - [ ] Write Swagger Documentation.
+- [ ] Intigrate swagger.
 - [ ] Build the API using monolithic architecture.
 - [ ] Build a frontend app using ReactJS.
 - [ ] Refactore the API with microservices.
