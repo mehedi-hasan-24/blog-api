@@ -31,6 +31,8 @@ This is a practice project. The project will maintain the best practices of how 
 - [ ] Write Swagger Documentation.
 - [ ] Intigrate swagger.
 - [ ] Build the API using monolithic architecture.
+  - [ ] Validation 
+  - [ ] Error handling
 - [ ] Build a frontend app using ReactJS.
 - [ ] Refactore the API with microservices.
 

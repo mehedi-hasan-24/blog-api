@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "Blog API",
+    "description": "My blog API for learning purpose"
   },
   "servers": [
     {
@@ -14,7 +14,11 @@
   "tags": [
     {
       "name": "Tests",
-      "description": ""
+      "description": "Tests endpoints"
+    },
+    {
+      "name": "Articles",
+      "description": "Articles endpoints"
     }
   ],
   "paths": {
@@ -38,6 +42,62 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/articles/": {
+      "post": {
+        "tags": [
+          "Articles"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/article"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "article": {
+        "title": "Article",
+        "required": [
+          "title",
+          "body"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "cover": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "published"
+            ]
+          },
+          "authorId": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       }

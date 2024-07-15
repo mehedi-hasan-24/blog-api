@@ -1,11 +1,27 @@
 const path = require('path');
 const swaggerAutogen = require('swagger-autogen')({openapi: '3.0.0'});
+const mongooseToSwagger = require('mongoose-to-swagger');
+const {Article} = require('./../model/index');
+const m2sOptions = { 
+  /**
+   * Whitelist of custom meta fields.
+   */
+  props: ['format'],
+  /**
+   * Fields to omit from model root. "__v" and "id" are omitted by default with omitMongooseInternals (default: true)
+   */
+  omitFields: ['_id'], 
+  /**
+   * Omit mongoose internals, omits mongoose internals from result ("__v", "id" - mongoose version field and virtual id field) (default: true)
+   */
+  omitMongooseInternals: true
+};
 
 const doc = {
   info: {
     version: '',            // by default: '1.0.0'
-    title: '',              // by default: 'REST API'
-    description: ''         // by default: ''
+    title: 'Blog API',              // by default: 'REST API'
+    description: 'My blog API for learning purpose'         // by default: ''
   },
   servers: [
     {
@@ -17,11 +33,19 @@ const doc = {
   tags: [                   // by default: empty Array
     {
       name: 'Tests',             // Tag name
-      description: ''       // Tag description
+      description: 'Tests endpoints'       // Tag description
+    },                  // by default: empty Array
+    {
+      name: 'Articles',             // Tag name
+      description: 'Articles endpoints'       // Tag description
     },
     // { ... }
   ],
-  components: {}            // by default: empty object
+  components: {
+    '@schemas': {
+      article: mongooseToSwagger(Article, m2sOptions)
+    }
+  }            // by default: empty object
 };
 
 // const outputFile = path.resolve(__dirname, './../static/swagger_output.json');

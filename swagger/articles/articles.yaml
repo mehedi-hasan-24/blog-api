@@ -91,6 +91,9 @@ post:
               type: string
               enum: [draft, published]
               example: draft
+            authorId:
+              type: uuid
+              example: '550e8400-e29b-41d4-a716-446655440000'
           required: [title, body]
   responses:
     '201':

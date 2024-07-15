@@ -4,7 +4,7 @@ DB_CONNECTION_URL = DB_CONNECTION_URL.replace('<username>', process.env.DB_USERN
 DB_CONNECTION_URL = DB_CONNECTION_URL.replace('<password>', process.env.DB_PASSWORD);
 
 const connectDB = async () => {
-    await mongoose.connect(DB_CONNECTION_URL, { dbName: process.env.DB_NAME });
+    await mongoose.connect(DB_CONNECTION_URL, { dbName: process.env.DB_NAME, autoIndex: false });
     console.log("DB connected...");
 }
 
